@@ -80,50 +80,6 @@ public class AddView extends JInternalFrame
         return painel;
     }
 
-    public void initComponents()
-    {
-        setLayout(new BoxLayout(getContentPane(),BoxLayout.Y_AXIS));
-
-        teamTF = new JTextField(20);
-        nameTF = new JTextField(20);
-        ageTF = new JTextField(20);
-
-        teamL = new JLabel("Team:");
-        nameL = new JLabel("Name: ");
-        ageL= new JLabel("Age:");
-        activeL = new JLabel("Active:");
-
-
-        activeRB = new JRadioButton("Active",true);
-        notActiveRB = new JRadioButton("Not Active",false);
-
-        buttonGroup = new ButtonGroup();
-        buttonGroup.add(activeRB);
-        buttonGroup.add(notActiveRB);
-
-        status = new JLabel("");
-        addButton = new JButton("add");
-
-        ButtonHandler handler = new ButtonHandler();
-        addButton.addActionListener(handler);
-
-        add(teamL);
-        add(teamTF);
-
-        add(nameL);
-        add(nameTF);
-
-        add(ageL);
-        add(ageTF);
-        
-        add(activeL);
-        add(activeRB);
-        add(notActiveRB);
-
-        add(status);
-        add(addButton);
-        
-    }
 
     private class ButtonHandler implements ActionListener
     {
