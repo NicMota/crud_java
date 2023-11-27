@@ -7,7 +7,7 @@ import java.sql.SQLException;
 public class Conn 
 {   
     
-    
+    Connection conn;
     
     public Conn()
     {
@@ -15,7 +15,7 @@ public class Conn
         {
             Class.forName("org.hsqldb.jdbcDriver");
 
-            Connection conn = DriverManager.getConnection("jdbc:hsqldb:file:C:/Users/User/Desktop/crud_java/dbTable/","sa","");
+            this.conn = DriverManager.getConnection("jdbc:hsqldb:file:C:/Users/User/Desktop/crud_java/dbTable/","sa","");
             
             System.out.printf("fodido");
             

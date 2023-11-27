@@ -10,7 +10,8 @@ import java.awt.event.*;
 
 public class AddView extends JInternalFrame
 {   
-    private JTextField teamTF,nameTF,ageTF;
+    
+    private JTextField idTF,teamTF,nameTF,ageTF;
     private JRadioButton activeRB,notActiveRB;
     private ButtonGroup buttonGroup;
     private JLabel teamL,nameL,ageL,activeL;
@@ -36,7 +37,8 @@ public class AddView extends JInternalFrame
         JPanel painel = new JPanel();
         painel.setLayout(new BoxLayout(painel, BoxLayout.PAGE_AXIS));
         painel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-
+        
+        idTF = new JTextField(3);
         teamTF = new JTextField(20);
         nameTF = new JTextField(20);
         ageTF = new JTextField(20);
@@ -60,6 +62,7 @@ public class AddView extends JInternalFrame
         ButtonHandler handler = new ButtonHandler();
         addButton.addActionListener(handler);
         
+        painel.add(idTF);
 
         painel.add(teamL);
         painel.add(teamTF);
@@ -88,13 +91,14 @@ public class AddView extends JInternalFrame
         {   
             String team,name,age;
             boolean active;
+            int id = Integer.parseInt(idTF.getText());
             team = teamTF.getText();
             name = nameTF.getText();
             age = ageTF.getText();
             active = activeRB.isSelected();
             
           
-            PlayerVO newPlayer = new PlayerVO(team,name,age,active);
+            PlayerVO newPlayer = new PlayerVO(id,team,name,age,active);
              
 
             if(playerController.addPlayer(newPlayer))
