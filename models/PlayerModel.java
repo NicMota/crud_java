@@ -7,7 +7,7 @@ import javax.swing.JOptionPane;
 public class PlayerModel 
 {
     private ArrayList<PlayerVO> playersList = new ArrayList<>();
-
+    
     public boolean playerExists(String name)
     {
         for(PlayerVO p : playersList)

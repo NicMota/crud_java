@@ -3,7 +3,6 @@ package views;
 import models.vo.PlayerVO;
 import controllers.PlayerController;
 
-import java.util.ArrayList;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -62,7 +61,13 @@ public class EditView extends JInternalFrame
         buttonGroup = new ButtonGroup();
         buttonGroup.add(activeRB);
         buttonGroup.add(notActiveRB);
-        
+            
+        status = new JLabel("");
+        addButton = new JButton("add");
+
+        ButtonHandler handler = new ButtonHandler();
+        addButton.addActionListener(handler);
+        playersComboBox.addFocusListener(handler);
         
         painel.add(playersComboBox);
 
@@ -83,12 +88,7 @@ public class EditView extends JInternalFrame
         painel.add(addButton);
         
         
-        status = new JLabel("");
-        addButton = new JButton("add");
-
-        ButtonHandler handler = new ButtonHandler();
-        addButton.addActionListener(handler);
-        playersComboBox.addFocusListener(handler);
+       
 
         return painel;
 
