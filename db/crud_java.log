@@ -1,5 +1,0 @@
-/*C1*/SET SCHEMA SYSTEM_LOBS
-INSERT INTO BLOCKS VALUES(0,2147483647,0)
-COMMIT
-/*C2*/SET SCHEMA PUBLIC
-CREATE TABLE jogadores_cs( \u000aid int primary key,\u000aname varchar(200) not null,\u000ateam varchar(200) not null,\u000aage int not null,\u000aactive bit not null\u000a)

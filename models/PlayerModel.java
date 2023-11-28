@@ -65,16 +65,30 @@ public class PlayerModel
         return false;
         
     }
-    public String[] getPlayersNameArray()
+    public ArrayList<String> getPlayersNameArray()
     {   
-        String[] playersNameArray = new String[playersList.size()];
-        for (int i = 0; i < playersNameArray.length; i++) 
-        {   
-            if(playersList.get(i) != null)
-            playersNameArray[i] = playersList.get(i).getName();
-        }  
+        ArrayList<String> playersNameList = new ArrayList<>();;
+        String query = "SELECT name FROM jogadores_cs";
+        try {
+            this.conectar();
+            
+            Statement stmt = this.conn.createStatement();
+            
+            ResultSet res = stmt.executeQuery(query);
+
+            while (res.next()) {
+                String name = res.getString("name");
+                playersNameList.add(name);
+            }
+
+            this.conn.close();
+            return playersNameList;
+            
+        } catch (SQLException e) {
+            
+            return null;
+        }
         
-        return playersNameArray;
 
     }
     public boolean addPlayer(PlayerVO newPlayer)
@@ -95,7 +109,11 @@ public class PlayerModel
                 stmt.setString(2, newPlayer.getName());
                 stmt.setString(3,newPlayer.getTeam());
                 stmt.setString(4,newPlayer.getAge());
-                stmt.setBoolean(5,newPlayer.isActive());
+                if(newPlayer.isActive())
+                    byte actv = 1;
+                else 
+                    byte actv = 0;
+                stmt.setByte(5, );
 
                 int res = stmt.executeUpdate();
                 if(res==1)
@@ -119,16 +137,39 @@ public class PlayerModel
         
     }
     public PlayerVO searchPlayer(String name)
-    {  
-        for(PlayerVO p : playersList)
-        {   
-         
-            if(p.getName().equals(name))
+    {   
+
+        String query = "SELECT * FROM jogadores_cs WHERE name=?";
+        try {
+            this.conectar();
+            PreparedStatement stmt = this.conn.prepareStatement(query);
+            stmt.setString(1, name);
+            ResultSet res = stmt.executeQuery();
+            int id;
+            String nme,team,age;
+            boolean active;
+            PlayerVO player;
+            while (res.next()) 
             {
-                return p;
+                id = res.getInt("id");
+                nme = res.getString("name");
+                team = res.getString("team");
+                age = res.getString("age");
+                active = res.getBoolean("active");
+                player = new PlayerVO(id, team, nme, age, active);
+                return player;
+                
             }
+            stmt.close();
+            res.close();
+            this.conn.close();
+            return null;
+        } catch (SQLException e) {
+            
+            return null;
         }
-        return null;
+        
+        
     }
     public boolean removePlayer(String name)
     {
