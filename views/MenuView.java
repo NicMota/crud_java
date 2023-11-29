@@ -2,6 +2,7 @@ package views;
 
 import javax.swing.JFrame;
 
+
 import controllers.PlayerController;
 
 import java.util.ArrayList;
@@ -28,6 +29,7 @@ public class MenuView extends JFrame
         buttons.add(new JButton("Search"));
         buttons.add(new JButton("Remove"));
         buttons.add(new JButton("Edit"));
+        buttons.add(new JButton("List"));
         
 
         ButtonHandler handler = new ButtonHandler();
@@ -70,6 +72,13 @@ public class MenuView extends JFrame
                    
                     ed.setVisible(true);
                     add(ed);
+
+                    break;
+                case "List":
+                    ListView ls = new ListView(playerController);
+
+                    ls.setVisible(true);
+                    add(ls);
 
                     break;
             }

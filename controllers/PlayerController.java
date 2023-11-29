@@ -27,13 +27,13 @@ public class PlayerController
     {
         return playerModel.getPlayersList();
     }
-    public String[] getPlayersNameArray()
+    public ArrayList<String> getPlayersName()
     {
-        return playerModel.getPlayersNameArray();
+        return playerModel.getPlayersName();
     }
-    public boolean editPlayer(String oldPlayersName,String newTeam,String newName,String newAge,boolean isActive)
+    public boolean editPlayer(int id,String newTeam,String newName,String newAge,boolean isActive)
     {
-        return playerModel.editPlayer(oldPlayersName,newTeam,newName,newAge,isActive);
+        return playerModel.editPlayer( id,newTeam,newName,newAge,isActive);
     }
     
 }

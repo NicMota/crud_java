@@ -6,6 +6,7 @@ import controllers.PlayerController;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 
 public class EditView extends JInternalFrame
 {
@@ -13,12 +14,12 @@ public class EditView extends JInternalFrame
     private JRadioButton activeRB,notActiveRB;
     private ButtonGroup buttonGroup;
 
-    private JLabel teamL,nameL,ageL,activeL;
+    private JLabel idL,teamL,nameL,ageL,activeL;
     private JComboBox playersComboBox;
 
     private JButton addButton;
 
-    private String[] playersName;
+    private ArrayList<String> playersName;
     private JLabel status;
     private PlayerController playerController;
     
@@ -41,11 +42,15 @@ public class EditView extends JInternalFrame
         painel.setLayout(new BoxLayout(painel, BoxLayout.PAGE_AXIS));
         painel.setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
          
-        playersName = playerController.getPlayersNameArray();
-        
-        playersComboBox = new JComboBox<>(playersName);
-       
-        
+        playersName = playerController.getPlayersName();
+        playersComboBox = new JComboBox<String>();
+        for(int i = 0 ; i<playersName.size();i++)
+        {   
+            playersComboBox.addItem(playersName.get(i));
+        }
+    
+        idL = new JLabel();
+        idL.setVisible(false);
         teamTF = new JTextField(20);
         nameTF = new JTextField(20);
         ageTF = new JTextField(20);
@@ -101,16 +106,16 @@ public class EditView extends JInternalFrame
         {   
             if(playersComboBox.getSelectedItem() != null)
             {
-                String playersSelectedName = playersComboBox.getSelectedItem().toString();
+                int id = Integer.parseInt(idL.getText());
                 String newTeam = teamTF.getText();
                 String newName = nameTF.getText();
                 String newAge = ageTF.getText();
                 boolean isActive = activeRB.isSelected();
 
-                if(playerController.editPlayer(playersSelectedName,newTeam,newName,newAge,isActive))
+                if(playerController.editPlayer(id,newTeam,newName,newAge,isActive))
                 {   
                     
-                    playersName = playerController.getPlayersNameArray();
+                    playersName = playerController.getPlayersName();
                    
                     playersComboBox.setSelectedItem(newName);
                     status.setForeground(Color.blue);
@@ -129,6 +134,7 @@ public class EditView extends JInternalFrame
             {
                 String playerSelectedName = playersComboBox.getSelectedItem().toString();
                 PlayerVO playerSelected = playerController.searchPlayer(playerSelectedName);
+                idL.setText(Integer.toString(playerSelected.getId()));
                 teamTF.setText(playerSelected.getTeam());    
                 nameTF.setText(playerSelected.getName());
                 ageTF.setText(playerSelected.getAge());

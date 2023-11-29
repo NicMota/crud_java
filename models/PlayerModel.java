@@ -65,7 +65,7 @@ public class PlayerModel
         return false;
         
     }
-    public ArrayList<String> getPlayersNameArray()
+    public ArrayList<String> getPlayersName()
     {   
         ArrayList<String> playersNameList = new ArrayList<>();;
         String query = "SELECT name FROM jogadores_cs";
@@ -109,11 +109,12 @@ public class PlayerModel
                 stmt.setString(2, newPlayer.getName());
                 stmt.setString(3,newPlayer.getTeam());
                 stmt.setString(4,newPlayer.getAge());
+                byte actv;
                 if(newPlayer.isActive())
-                    byte actv = 1;
+                    actv = 1;
                 else 
-                    byte actv = 0;
-                stmt.setByte(5, );
+                    actv = 0;
+                stmt.setByte(5, actv);
 
                 int res = stmt.executeUpdate();
                 if(res==1)
@@ -173,36 +174,68 @@ public class PlayerModel
     }
     public boolean removePlayer(String name)
     {
-         for(PlayerVO p : playersList)
-        {
-            if(p.getName().equals(name));
+
+        String query = "DELETE FROM jogadores_cs WHERE name = ?";
+        try {
+            this.conectar();
+            PreparedStatement stmt = this.conn.prepareStatement(query);
+            stmt.setString(1, name);
+
+            int res = stmt.executeUpdate();
+
+            if(res == 1)
             {   
-                playersList.remove(p);
+                stmt.close();
+                this.conn.close();
                 return true;
             }
+                
+            stmt.close();
+            this.conn.close();
+            return false;
+
+        } catch (SQLException e) {
+           return false;
         }
-        return false;
+    
     }
 
     public ArrayList<PlayerVO> getPlayersList()
     {
         return playersList;
     }
-    public boolean editPlayer(String oldPlayersName,String newTeam,String newName,String newAge,boolean isActive)
+    public boolean editPlayer(int id,String newTeam,String newName,String newAge,boolean isActive)
     {
-        for (PlayerVO p : playersList) 
-        {
-            if(p.getName().equals(oldPlayersName))
-            {
-                p.setTeam(newTeam);
-                p.setName(newName);
-                p.setAge(newAge);
-                p.setActive(isActive);
+        String query = "UPDATE jogadores_cs SET team = ?,name = ?,age=?,active=? WHERE id = ?";
+        try {
+            this.conectar();
+            PreparedStatement stmt = this.conn.prepareStatement(query);
+            stmt.setString(1, newTeam);
+            stmt.setString(2, newName);
+            stmt.setString(3, newAge);
+            byte actv;
+            if(isActive)
+                actv = 1;
+            else
+                actv = 0;
+            stmt.setByte(4, actv);
+            stmt.setInt(5, id);
 
+            int res = stmt.executeUpdate();
+
+            if(res==1)
+            {
+                stmt.close();
+                this.conn.close();
                 return true;
             }
+            stmt.close();
+            this.conn.close();
+            return false;
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+            return false;
         }
-        return false;
         
 
     }
