@@ -39,5 +39,9 @@ public class PlayerController
     {
         return playerModel.editPlayer( id,newTeam,newName,newAge,isActive);
     }
+    public int count()
+    {
+        return playerModel.count();
+    }
     
 }

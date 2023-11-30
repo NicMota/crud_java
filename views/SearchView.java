@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public class SearchView extends JInternalFrame
 {   
-    
+    JPanel painel;
     JTextField searchBar;
     JButton searchButton;
     JLabel status,rotulo;
@@ -34,7 +34,7 @@ public class SearchView extends JInternalFrame
 
     public Container criaPainel()
     {   
-        JPanel painel= new JPanel();
+        painel= new JPanel();
 
         painel.setLayout(new BoxLayout(painel, BoxLayout.PAGE_AXIS));
         painel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
@@ -72,23 +72,26 @@ public class SearchView extends JInternalFrame
         {   
             ArrayList<PlayerVO> list;
             String name = searchBar.getText();
-           
+            
             
             if(playerController.searchPlayer(name) != null)
             {   
                 list = playerController.searchPlayer(name);
-                
+                String text = "";
                 for (PlayerVO searchedPlayer : list)
                 {
                     
-                    String text = String.format("Player Founded: Name: %s, Team: %s, Age: %s, Active: %s",searchedPlayer.getName(),searchedPlayer.getTeam(),searchedPlayer.getAge(),(searchedPlayer.isActive() ? "Yes" : "No"));
-                    
-                    res.add(new JLabel(text));
+                    text += String.format("Name: %s, Team: %s, Age: %s, Active: %s",searchedPlayer.getName(),searchedPlayer.getTeam(),searchedPlayer.getAge(),(searchedPlayer.isActive() ? "Yes" : "No"));
+                    text+="<br>";
                 }
-               
+                
+                painel.repaint();
+                pack();
+                
                 status.setForeground(Color.blue);
-                status.setText("Founded Players:");
-                criaPainel();
+                status.setText("<html><body>"+text+"</body></html>");
+                 
+                pack();
             
                 return;
             }else 

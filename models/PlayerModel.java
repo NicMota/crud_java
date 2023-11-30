@@ -147,7 +147,7 @@ public class PlayerModel
 
                 int res = stmt.executeUpdate();
                 if(res==1)
-                {   JOptionPane.showMessageDialog(null, "Jogador Adicionado com Sucesso");
+                {   
                     stmt.close();
                     this.conn.close();
                     return true;
@@ -298,5 +298,25 @@ public class PlayerModel
         }
         
 
+    }
+    public int count()
+    {
+         try {
+            ArrayList<PlayerVO> list = new ArrayList<>();
+            this.conectar();
+            String query = "SELECT count(*) as playerCount FROM jogadores_cs";
+            Statement stmt = this.conn.createStatement();
+            ResultSet res = stmt.executeQuery(query);
+            int count = 0;
+            while (res.next()) {
+                count = res.getInt("playerCount");
+            }
+            return count;
+         
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+            return 0; 
+        }
     }
 }

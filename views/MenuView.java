@@ -4,6 +4,7 @@ import javax.swing.JFrame;
 
 
 import controllers.PlayerController;
+import models.vo.PlayerVO;
 
 import java.util.ArrayList;
 import javax.swing.*;
@@ -31,6 +32,9 @@ public class MenuView extends JFrame
         buttons.add(new JButton("Edit"));
         buttons.add(new JButton("List"));
         buttons.add(new JButton("DeleteAll"));
+        buttons.add(new JButton("CargaInicial"));
+        buttons.add(new JButton("ContarJogadores"));
+
         
 
         ButtonHandler handler = new ButtonHandler();
@@ -84,9 +88,35 @@ public class MenuView extends JFrame
                     break;
                 case "DeleteAll":
                     int res = JOptionPane.showConfirmDialog(null, "voce tem certeza que deseja deletar todos");
-                    System.out.println(res);
+                    
                     if(res==0)
                         playerController.deleteAll();
+                    
+                    break;
+                case "CargaInicial":
+                    int r = JOptionPane.showConfirmDialog(null, "Esse botao ira deletar todos os dados existentes( se houver ) e adicionar 5 jogadores pre definidos");
+                    
+                    if(r==0)
+                    {   
+                        playerController.deleteAll();
+                        ArrayList<PlayerVO> cargaInicial = new ArrayList<>();
+                        cargaInicial.add(new PlayerVO(1, "Furia", "Art", "25", true));
+                        cargaInicial.add(new PlayerVO(2, "Furia", "Fallen", "23", true));
+                        cargaInicial.add(new PlayerVO(3, "Furia", "Yurih", "21", true));
+                        cargaInicial.add(new PlayerVO(4, "Furia", "Drop", "26", true));
+                        cargaInicial.add(new PlayerVO(5, "Furia", "Kscerato", "27", true));
+                        
+                        for (PlayerVO carga : cargaInicial) {
+                                playerController.addPlayer(carga);
+                        }
+                    
+                        
+                    }
+                    break;
+                case "ContarJogadores":
+                    int playersNum = playerController.count();
+                    JOptionPane.showMessageDialog(null,"Estao cadastrados: " + playersNum + " jogadores");
+                    break;
             }
         }
     }
