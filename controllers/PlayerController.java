@@ -15,6 +15,10 @@ public class PlayerController
     {
         return playerModel.addPlayer(newPlayer);
     }
+    public boolean deleteAll()
+    {
+        return playerModel.deleteAll();
+    }
     public PlayerVO searchPlayer(String name)
     {
         return playerModel.searchPlayer(name);

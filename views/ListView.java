@@ -23,8 +23,8 @@ public class ListView extends JInternalFrame
     
         super("" + (++janela),true,true,true,true);
         this.playerController =  p;
-        players = p.getPlayersList();
-        
+        this.players = this.playerController.getPlayersList();
+        setContentPane(criaPainel());
         pack();
 
         setLocation(posicao * janela, posicao * janela);
@@ -39,10 +39,10 @@ public class ListView extends JInternalFrame
         
         playersLabelList = new ArrayList<JLabel>();
         
-        String format = "Id: %d Nome: %s, Time: %s, Idade: %d, Ativo:%s";
+        String format = "Id: %d Nome: %s, Time: %s, Idade: %s, Ativo:%s";
         for (PlayerVO player : players) 
         {   
-            String text = String.format(format, player.getId(),player.getName(),player.getTeam(),player.getTeam(),(player.isActive() ? "Yes" : "No"));
+            String text = String.format(format, player.getId(),player.getName(),player.getTeam(),player.getAge(),(player.isActive() ? "Yes" : "No"));
             playersLabelList.add(new JLabel(text));
         }
         

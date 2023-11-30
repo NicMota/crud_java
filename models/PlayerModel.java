@@ -11,6 +11,7 @@ public class PlayerModel
 {
     private ArrayList<PlayerVO> playersList = new ArrayList<>();
     private Connection conn;
+    
     public boolean conectar()
     {
         try
@@ -22,7 +23,8 @@ public class PlayerModel
             return true;
             
             
-        }catch(SQLException e)
+        }
+        catch(SQLException e)
         {
             System.err.println(e.getMessage());
             return false;
@@ -32,24 +34,50 @@ public class PlayerModel
             return false;
         }
     }
-    public boolean playerExists(String name)
+    public boolean deleteAll()
+    {
+        String query = "DELETE FROM jogadores_cs";
+        try {
+            this.conectar();
+            Statement stmt = this.conn.createStatement();
+            
+
+            int res = stmt.executeUpdate(query);
+
+            if(res == 1)
+            {   
+                stmt.close();
+                this.conn.close();
+                return true;
+            }
+                
+            stmt.close();
+            this.conn.close();
+            return false;
+
+        } catch (SQLException e) {
+           return false;
+        }
+    }
+    public boolean playerExists(int id)
     {   
         if(this.conectar()){
             try
             {
             
 
-                String query = "SELECT count(*) FROM jogadores_cs WHERE name=?";
+                String query = "SELECT count(*) FROM jogadores_cs WHERE id=?";
                 PreparedStatement stmt = this.conn.prepareStatement(query);
-
-                stmt.setString(1, name);
-
+                
+                stmt.setInt(1, id);
+                
                 ResultSet res = stmt.executeQuery();
 
                 if(res.getRow() == 0)
                 {
                     stmt.close();
                     res.close();
+                    this.conn.close();
                     return false;
                 }
                 stmt.close();
@@ -95,13 +123,14 @@ public class PlayerModel
     {   
         if(this.conectar())
         {
-            if(playerExists(newPlayer.getName()))
+            if(playerExists(newPlayer.getId()))
             {
-                JOptionPane.showMessageDialog(null, "Already Exists a Player with that Name!");
+                JOptionPane.showMessageDialog(null, "Already Exists a Player with that Id!");
                 return false;
             }
         
             try {
+                this.conectar();
                 String query = "INSERT INTO jogadores_cs(id,name,team,age,active) VALUES (?,?,?,?,?)";
                 PreparedStatement stmt = this.conn.prepareStatement(query);
 
@@ -202,7 +231,35 @@ public class PlayerModel
 
     public ArrayList<PlayerVO> getPlayersList()
     {
-        return playersList;
+        try {
+            ArrayList<PlayerVO> list = new ArrayList<>();
+            this.conectar();
+            String query = "SELECT * FROM jogadores_cs";
+            Statement stmt = this.conn.createStatement();
+            ResultSet res = stmt.executeQuery(query);
+            while (res.next()) {
+                int id = res.getInt("id");
+                String name = res.getString("name");
+                String team = res.getString("team");
+                String age = res.getString("age");
+                byte active = res.getByte("active");
+                boolean actv;
+                if(active == 1)
+                    actv = true;
+                else 
+                    actv = false;
+            
+                list.add(new PlayerVO(id, team, name, age, actv));
+                    
+            }
+            this.conn.close();
+            stmt.close();
+            res.close();
+            return list;
+
+        } catch (SQLException e) {
+            return null;   
+        }
     }
     public boolean editPlayer(int id,String newTeam,String newName,String newAge,boolean isActive)
     {
