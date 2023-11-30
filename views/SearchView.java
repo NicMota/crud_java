@@ -7,6 +7,7 @@ import models.vo.PlayerVO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 
 public class SearchView extends JInternalFrame
 {   
@@ -14,6 +15,7 @@ public class SearchView extends JInternalFrame
     JTextField searchBar;
     JButton searchButton;
     JLabel status,rotulo;
+    ArrayList<JLabel> res;
     PlayerController playerController;
 
     static int posicao = 30;
@@ -39,6 +41,7 @@ public class SearchView extends JInternalFrame
         rotulo = new JLabel("entre com o nome do jogador que deseja pesquisar");
         searchBar = new JTextField(20);
         searchButton = new JButton("search");
+        res = new ArrayList<>();
         
         ButtonHandler handler = new ButtonHandler();
         searchButton.addActionListener(handler);
@@ -51,6 +54,11 @@ public class SearchView extends JInternalFrame
         painel.add(Box.createVerticalStrut(20));
         painel.add(status);
         painel.add(Box.createVerticalStrut(20));
+        for (JLabel r : res) {
+            painel.add(r);
+            painel.add(Box.createVerticalStrut(10));
+        }
+        painel.add(Box.createVerticalStrut(20));
         painel.add(searchButton);
 
 
@@ -62,16 +70,26 @@ public class SearchView extends JInternalFrame
         @Override
         public void actionPerformed(ActionEvent e)
         {   
-            PlayerVO searchedPlayer;
+            ArrayList<PlayerVO> list;
             String name = searchBar.getText();
            
             
-            if(playerController.searchPlayer(name)!=null)
+            if(playerController.searchPlayer(name) != null)
             {   
-                searchedPlayer = playerController.searchPlayer(name);
-                String text = String.format("Player Founded: Name: %s, Team: %s, Age: %s, Active: %s",searchedPlayer.getName(),searchedPlayer.getTeam(),searchedPlayer.getAge(),(searchedPlayer.isActive() ? "Yes" : "No"));
+                list = playerController.searchPlayer(name);
+                
+                for (PlayerVO searchedPlayer : list)
+                {
+                    
+                    String text = String.format("Player Founded: Name: %s, Team: %s, Age: %s, Active: %s",searchedPlayer.getName(),searchedPlayer.getTeam(),searchedPlayer.getAge(),(searchedPlayer.isActive() ? "Yes" : "No"));
+                    
+                    res.add(new JLabel(text));
+                }
+               
                 status.setForeground(Color.blue);
-                status.setText(text );
+                status.setText("Founded Players:");
+                criaPainel();
+            
                 return;
             }else 
             {   

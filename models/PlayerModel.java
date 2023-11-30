@@ -166,19 +166,20 @@ public class PlayerModel
 
         
     }
-    public PlayerVO searchPlayer(String name)
+    public ArrayList<PlayerVO> searchPlayer(String name)
     {   
 
-        String query = "SELECT * FROM jogadores_cs WHERE name=?";
+        String query = "SELECT * FROM jogadores_cs WHERE name LIKE ?;";
         try {
             this.conectar();
             PreparedStatement stmt = this.conn.prepareStatement(query);
-            stmt.setString(1, name);
+            stmt.setString(1, "%" +name+ "%");
             ResultSet res = stmt.executeQuery();
             int id;
             String nme,team,age;
             boolean active;
-            PlayerVO player;
+            ArrayList<PlayerVO> list = new ArrayList<>();
+            
             while (res.next()) 
             {
                 id = res.getInt("id");
@@ -186,16 +187,18 @@ public class PlayerModel
                 team = res.getString("team");
                 age = res.getString("age");
                 active = res.getBoolean("active");
-                player = new PlayerVO(id, team, nme, age, active);
-                return player;
+                list.add(new PlayerVO(id, team, nme, age, active));
+                
                 
             }
+            if(list.isEmpty())
+                return null;
             stmt.close();
             res.close();
             this.conn.close();
-            return null;
+            return list;
         } catch (SQLException e) {
-            
+            JOptionPane.showMessageDialog(null, e.getMessage());
             return null;
         }
         

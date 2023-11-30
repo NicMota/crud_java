@@ -30,7 +30,7 @@ public class MenuView extends JFrame
         buttons.add(new JButton("Remove"));
         buttons.add(new JButton("Edit"));
         buttons.add(new JButton("List"));
-        buttons.add(new JButton("Delete "));
+        buttons.add(new JButton("DeleteAll"));
         
 
         ButtonHandler handler = new ButtonHandler();
@@ -84,7 +84,8 @@ public class MenuView extends JFrame
                     break;
                 case "DeleteAll":
                     int res = JOptionPane.showConfirmDialog(null, "voce tem certeza que deseja deletar todos");
-                    if(res==1)
+                    System.out.println(res);
+                    if(res==0)
                         playerController.deleteAll();
             }
         }

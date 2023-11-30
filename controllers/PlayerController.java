@@ -19,7 +19,7 @@ public class PlayerController
     {
         return playerModel.deleteAll();
     }
-    public PlayerVO searchPlayer(String name)
+    public ArrayList<PlayerVO> searchPlayer(String name)
     {
         return playerModel.searchPlayer(name);
     }
